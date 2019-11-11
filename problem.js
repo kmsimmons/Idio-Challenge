@@ -3,21 +3,40 @@ var readline = require('readline').createInterface({
   output: process.stdout
 }), counter = 0, staffRoster = [],
 
+//do not change Employee function!
+
 Employee = function(staffMember) {
    this.firstname = staffMember.firstname
    this.familyname = staffMember.familyname
    this.age = staffMember.age
 
    this.setName = function(newName) { this.firstname = newName }
-   this.setFullName = function() { return this.name + ' ' +  this.familyname }
+   this.setFullName = function(name) { return this.name + ' ' +  this.familyname }
 };
 
 
 readline.on('line', function(line) {
   counter+=1;
+  //empty array to store employee data
+
+  employeeData = []
   staffRoster[counter] = function() {
-    var staff = new Employee({ firstname : line.trim() });
-    console.log("Staff #" + counter + ': ' + staff.firstname + ' ' + staff.familyname + ',' + staff.age);
+    //trim additional spaces from firstname, familyname and age
+
+    var staff = new Employee({ firstname : line.trim(), familyname : line.trim(), age : line.trim() })
+    //check data types to make sure data is valid
+   
+    if(typeof(staff.firstname) === 'string' && typeof(staff.familyname) === 'string') {
+        //push staff into employeeData array
+
+        employeeData.push(staff)
+        //log new #, first name, family name, and age
+        console.log("#" + (employeeData.indexOf(staff) + 1) + ',' + staff.firstname);
+        
+        // console.log(staff)
+    } else {
+        console.log('')
+    }
   };
 }).on('close', function() {
   staffRoster.forEach(function(element){
